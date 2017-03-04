@@ -3,3 +3,15 @@
 ################################################################################
 
 /src/MVCMongo.Services/bin
+/src/MVCMongo.Services/obj
+/src/MVCMongo.Data/bin
+/src/MVCMongo.Data/obj
+/src/MVCMongo.Core/bin/Debug/netstandard1.6
+/src/MVCMongo.Core/bin/Release/netstandard1.6
+/src/MVCMongo.Core/obj
+/src/MVCMongo/.vs/MVCMongo/v14
+/src/MVCMongo/bin
+/src/MVCMongo/obj
+/src/MVCMongo/Properties/PublishProfiles
+/src/JWTIssuer/bin/Debug/netstandard1.6
+/src/JWTIssuer/obj/Debug/netstandard1.6
