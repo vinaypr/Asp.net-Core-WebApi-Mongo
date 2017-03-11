@@ -15,6 +15,7 @@
         // GET: api/products
         [HttpGet]
         [Route("api/Products")]
+
         public IEnumerable<ProductViewModel> Get()
         {
             return _productService.GetProducts();

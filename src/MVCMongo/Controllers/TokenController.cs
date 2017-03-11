@@ -5,7 +5,6 @@ using JWTIssuer;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
-using MVCMongo.Core.Model;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,18 +14,18 @@ using MVCMongo.Core.ViewModel;
 namespace MVCMongo.Controllers
 {
     [Route("api/[controller]")]
-    public class JWTController : Controller
+    public class TokenController : Controller
     {
         private readonly JwtIssuerOptions _jwtOptions;
        // private readonly ILogger _logger;
         private readonly JsonSerializerSettings _serializerSettings;
 
         private readonly IUserService _userService;
-        public JWTController(IUserService userService,IOptions<JwtIssuerOptions> jwtOptions)
+        public TokenController(IUserService userService,IOptions<JwtIssuerOptions> jwtOptions)
         {
             _userService = userService;
             _jwtOptions = jwtOptions.Value;
-            ThrowIfInvalidOptions(_jwtOptions);
+             ValidateTokenOptions(_jwtOptions);
 
             _serializerSettings = new JsonSerializerSettings
             {
@@ -57,7 +56,7 @@ namespace MVCMongo.Controllers
                 new Claim(JwtRegisteredClaimNames.Iat,
                           ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(),
                           ClaimValueTypes.Integer64),
-                identity.FindFirst("DisneyCharacter")
+                identity.FindFirst("RandomString")
             };
 
             // Create the JWT security token and encode it.
@@ -82,7 +81,7 @@ namespace MVCMongo.Controllers
             return new OkObjectResult(json);
         }
 
-        private static void ThrowIfInvalidOptions(JwtIssuerOptions options)
+        private static void ValidateTokenOptions(JwtIssuerOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 

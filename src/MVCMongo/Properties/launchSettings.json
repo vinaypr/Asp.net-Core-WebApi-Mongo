@@ -24,7 +24,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "JwtIssuerOptions": {
-        "Issuer": "SuperAwesomeTokenServer",
+        "Issuer": "VinayTokenServer",
         "Audience": "http://localhost:50728/"
       }
     }

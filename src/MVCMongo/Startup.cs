@@ -12,8 +12,6 @@
     using MVCMongo.Data.Contexts;
     using MVCMongo.Data.Repository;
     using MVCMongo.Services;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc.Authorization;
     using JWTIssuer;
     using Microsoft.IdentityModel.Tokens;
     using System.Text;
