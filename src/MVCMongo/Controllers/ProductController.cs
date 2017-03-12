@@ -4,6 +4,7 @@
     using Microsoft.AspNetCore.Mvc;
     using MVCMongo.Core.Abstraction;
     using MVCMongo.Core.ViewModel;
+    using Microsoft.AspNetCore.Authorization;
 
     public class ProductController : Controller
     {
@@ -15,6 +16,7 @@
         // GET: api/products
         [HttpGet]
         [Route("api/Products")]
+        [Authorize(Policy = "SuperUser")]
 
         public IEnumerable<ProductViewModel> Get()
         {

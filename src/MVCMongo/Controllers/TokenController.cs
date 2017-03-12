@@ -16,12 +16,12 @@ namespace MVCMongo.Controllers
     [Route("api/[controller]")]
     public class TokenController : Controller
     {
-        private readonly JwtIssuerOptions _jwtOptions;
+        private readonly TokenOptions _jwtOptions;
        // private readonly ILogger _logger;
         private readonly JsonSerializerSettings _serializerSettings;
 
         private readonly IUserService _userService;
-        public TokenController(IUserService userService,IOptions<JwtIssuerOptions> jwtOptions)
+        public TokenController(IUserService userService, IOptions<TokenOptions> jwtOptions)
         {
             _userService = userService;
             _jwtOptions = jwtOptions.Value;
@@ -56,7 +56,7 @@ namespace MVCMongo.Controllers
                 new Claim(JwtRegisteredClaimNames.Iat,
                           ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(),
                           ClaimValueTypes.Integer64),
-                identity.FindFirst("RandomString")
+                identity.FindFirst("SuperAdmin")
             };
 
             // Create the JWT security token and encode it.
@@ -81,44 +81,46 @@ namespace MVCMongo.Controllers
             return new OkObjectResult(json);
         }
 
-        private static void ValidateTokenOptions(JwtIssuerOptions options)
+        private static void ValidateTokenOptions(TokenOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
             if (options.ValidFor <= TimeSpan.Zero)
             {
-                throw new ArgumentException("Must be a non-zero TimeSpan.", nameof(JwtIssuerOptions.ValidFor));
+                throw new ArgumentException("Must be a non-zero TimeSpan.", nameof(TokenOptions.ValidFor));
             }
 
             if (options.SigningCredentials == null)
             {
-                throw new ArgumentNullException(nameof(JwtIssuerOptions.SigningCredentials));
+                throw new ArgumentNullException(nameof(TokenOptions.SigningCredentials));
             }
 
             if (options.JtiGenerator == null)
             {
-                throw new ArgumentNullException(nameof(JwtIssuerOptions.JtiGenerator));
+                throw new ArgumentNullException(nameof(TokenOptions.JtiGenerator));
             }
         }
 
         /// <returns>Date converted to seconds since Unix epoch (Jan 1, 1970, midnight UTC).</returns>
         private static long ToUnixEpochDate(DateTime date)
-          => (long)Math.Round((date.ToUniversalTime() -
+          => (long)Math.Round((date -
                                new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
                               .TotalSeconds);
 
         /// <summary>
-        /// IMAGINE BIG RED WARNING SIGNS HERE!
         /// You'd want to retrieve claims through your claims provider
         /// in whatever way suits you, the below is purely for demo purposes!
         /// </summary>
         private static Task<ClaimsIdentity> GetClaimsIdentity(UserViewModel user)
         {
+            // Return different Claims based on user role
             if(user != null)
             {
                 return Task.FromResult(new ClaimsIdentity(
                   new GenericIdentity(user.UserName, "Token"),
-                  new Claim[] { }));
+                  new Claim[] {
+                      new Claim("SuperAdmin", "IAmSuperAdmin")
+                  }));
             }
 
             // Credentials are invalid, or account doesn't exist

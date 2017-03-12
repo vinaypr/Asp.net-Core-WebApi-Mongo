@@ -16,16 +16,12 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "LearningApp": {
+    "MVCMongo": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "http://localhost:5000/api/products",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "JwtIssuerOptions": {
-        "Issuer": "VinayTokenServer",
-        "Audience": "http://localhost:50728/"
       }
     }
   }

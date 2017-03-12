@@ -1,4 +1,4 @@
-﻿namespace LearningApp
+﻿namespace MVCMongo
 {
     using System.IO;
     using Microsoft.AspNetCore.Hosting;
